@@ -1,5 +1,6 @@
 import React from "react";
-import Note from "./Note";
+import "./NoteList.css";
+import { Link } from "react-router-dom";
 
 class NoteList extends React.Component {
   static defaultProps = {
@@ -11,7 +12,9 @@ class NoteList extends React.Component {
       const date = new Date(Date.parse(note.modified)).toDateString();
       return (
         <div className="note" key={note.id}>
-          <h4>{note.name}</h4>
+          <Link to={`/note/${note.id}`}>
+            <h4>{note.name}</h4>
+          </Link>
           <p className="modified">Date Modified {date}</p>
         </div>
       );

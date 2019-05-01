@@ -1,11 +1,6 @@
-.nav-link {
+div.note {
   border: 1px solid black;
   border-radius: 5px;
   padding: 5px;
   margin: 5px;
-  display: block;
-}
-
-.active {
-  background-color: skyblue;
 }

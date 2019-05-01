@@ -1,10 +1,9 @@
 import React from "react";
 import "./App.css";
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 
 import NOTES from "./dummy-store";
 import FolderList from "./components/FolderList";
-import Folder from "./components/Folder";
 import NoteList from "./components/NoteList";
 import Note from "./components/Note";
 
@@ -24,7 +23,9 @@ class App extends React.Component {
     console.log(this.state.notes);
     return (
       <div className="App">
-        <h1>Noteful</h1>
+        <Link to="/">
+          <h1>Noteful</h1>
+        </Link>
         <nav>
           <Route
             exact
@@ -36,8 +37,23 @@ class App extends React.Component {
               />
             )}
           />
-          <Route path="/folder/:folderid" component={Folder} />
-          <Route path="/note/:noteid" />
+          <Route
+            path="/folder/:folderid"
+            render={() => <FolderList folders={this.state.folders} />}
+          />
+          <Route
+            path="/note/:noteid"
+            render={routeProps => {
+              return (
+                <FolderList
+                  folders={this.state.folders}
+                  note={this.state.notes.find(
+                    note => note.id === routeProps.match.params.noteid
+                  )}
+                />
+              );
+            }}
+          />
         </nav>
         <main>
           <Route
@@ -51,8 +67,17 @@ class App extends React.Component {
               />
             )}
           />
-          <Route path="/folder/:folderid" component={Note} />
-          <Route path="/note/:noteid" />
+          <Route
+            path="/folder/:folderid"
+            render={routeProps => (
+              <NoteList
+                notes={this.state.notes.filter(note => {
+                  return note.folderId === routeProps.match.params.folderid;
+                })}
+              />
+            )}
+          />
+          <Route path="/note/:noteid" component={Note} />
         </main>
       </div>
     );
